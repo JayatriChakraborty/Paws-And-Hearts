@@ -16,7 +16,7 @@ export const SocialProof = () => {
     <section className="py-16 sm:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Happy Tails, Happy Homes</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Happy Tails, Happy Homes</h2>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
             Don't just take our word for it. Hear from our happy adopters.
           </p>
@@ -38,7 +38,7 @@ export const SocialProof = () => {
               </div>
             </CardContent>
           </Card>
-          <div className="grid grid-cols-2 gap-8 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-center">
             <div>
               <p className="text-5xl font-bold text-primary">5,000+</p>
               <p className="mt-2 text-muted-foreground">Pets Adopted</p>

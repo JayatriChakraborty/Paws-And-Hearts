@@ -7,7 +7,7 @@ export const Hero = () => {
     <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center text-center text-white bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1582562124811-c09040d0a901?q=80&w=2070&auto=format&fit=crop')" }}>
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight">
           Open Your Heart, Open Your Home
         </h1>
         <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-primary-foreground/90">

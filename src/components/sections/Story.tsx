@@ -10,7 +10,7 @@ export const Story = () => {
              <img src="https://images.unsplash.com/photo-1466721591366-2d5fba72006d?q=80&w=2070&auto=format&fit=crop" alt="Shelter history" className="rounded-lg shadow-lg w-full h-auto" />
           </div>
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Our Story: A Decade of Dedication</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Our Story: A Decade of Dedication</h2>
             <p className="mt-4 text-lg text-muted-foreground">
               For over ten years, Paws & Hearts has been a beacon of hope for homeless animals. We started as a small group of volunteers and have grown into a community dedicated to rescue, rehabilitation, and rehoming.
             </p>

@@ -43,7 +43,7 @@ const Contact = () => {
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">Get In Touch</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-primary">Get In Touch</h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
             Have questions? We'd love to hear from you.
           </p>
