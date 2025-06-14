@@ -1,11 +1,15 @@
 
 import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { PetCard } from '@/components/PetCard';
 import { PetDetailsDialog } from '@/components/PetDetailsDialog';
 import { PetFilters, Filters } from '@/components/PetFilters';
 import { pets as allPets, Pet } from '@/data/pets';
+import { Button } from '@/components/ui/button';
+import { Heart } from 'lucide-react';
+import { useWishlist } from '@/context/WishlistContext';
 
 const BrowsePets = () => {
   const [filters, setFilters] = useState<Filters>({
@@ -18,6 +22,7 @@ const BrowsePets = () => {
   });
   const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { wishlist } = useWishlist();
 
   const filteredPets = useMemo(() => {
     let pets = [...allPets];
@@ -67,6 +72,14 @@ const BrowsePets = () => {
       <Header />
       <PetFilters onFilterChange={setFilters} />
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex justify-end mb-4">
+            <Button asChild variant="outline">
+                <Link to="/wishlist">
+                    <Heart className="mr-2 h-4 w-4" />
+                    My Wishlist ({wishlist.length})
+                </Link>
+            </Button>
+        </div>
         {filteredPets.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredPets.map(pet => (
