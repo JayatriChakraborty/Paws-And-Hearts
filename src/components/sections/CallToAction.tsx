@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { PawPrint, Heart, Gift } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const CallToAction = () => {
   return (
@@ -25,7 +26,9 @@ export const CallToAction = () => {
             </CardHeader>
             <CardContent className="flex-grow"></CardContent>
             <CardFooter>
-              <Button variant="outline" className="w-full">View Available Pets</Button>
+              <Button variant="outline" className="w-full" asChild>
+                <Link to="/browse-pets">View Available Pets</Link>
+              </Button>
             </CardFooter>
           </Card>
 
@@ -39,7 +42,9 @@ export const CallToAction = () => {
             </CardHeader>
             <CardContent className="flex-grow"></CardContent>
             <CardFooter>
-              <Button className="w-full">Fill Adoption Form</Button>
+              <Button className="w-full" asChild>
+                <Link to="/adoption-form">Fill Adoption Form</Link>
+              </Button>
             </CardFooter>
           </Card>
           
