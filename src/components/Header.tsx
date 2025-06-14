@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
@@ -19,7 +18,7 @@ const navItems = [
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentUser } = useAuth();
+  const { currentUser, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -49,10 +48,10 @@ export const Header = () => {
             ))}
             {currentUser && (
                <Link
-                to="/dashboard"
+                to={isAdmin ? "/admin/dashboard" : "/dashboard"}
                 className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
               >
-                Dashboard
+                {isAdmin ? "Admin Dashboard" : "Dashboard"}
               </Link>
             )}
           </nav>
@@ -102,11 +101,11 @@ export const Header = () => {
           ))}
            {currentUser && (
                <Link
-                to="/dashboard"
+                to={isAdmin ? "/admin/dashboard" : "/dashboard"}
                 className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-secondary"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Dashboard
+                {isAdmin ? "Admin Dashboard" : "Dashboard"}
               </Link>
             )}
           <div className="pt-4 pb-2 px-3">

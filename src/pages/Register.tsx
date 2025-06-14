@@ -30,9 +30,13 @@ const Register = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
       toast.success('Registration successful! Welcome!');
-      navigate('/dashboard');
+      if (userCredential.user.email === 'jayatric305@gmail.com') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error: any) {
       toast.error(error.message);
     } finally {

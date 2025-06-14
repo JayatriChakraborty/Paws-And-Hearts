@@ -30,9 +30,13 @@ const Login = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
       toast.success('Login successful! Welcome back!');
-      navigate('/dashboard');
+      if (userCredential.user.email === 'jayatric305@gmail.com') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error: any) {
       toast.error('Invalid email or password. Please try again.');
     } finally {

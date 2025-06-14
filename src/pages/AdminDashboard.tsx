@@ -10,7 +10,7 @@ import { signOut } from 'firebase/auth';
 import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   const { currentUser, loading, isAdmin } = useAuth();
   const navigate = useNavigate();
 
@@ -18,8 +18,8 @@ const Dashboard = () => {
     if (!loading) {
       if (!currentUser) {
         navigate('/login');
-      } else if (isAdmin) {
-        navigate('/admin/dashboard');
+      } else if (!isAdmin) {
+        navigate('/dashboard');
       }
     }
   }, [currentUser, loading, isAdmin, navigate]);
@@ -34,7 +34,7 @@ const Dashboard = () => {
     }
   };
 
-  if (loading || !currentUser || isAdmin) {
+  if (loading || !currentUser || !isAdmin) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>Loading...</p>
@@ -49,11 +49,11 @@ const Dashboard = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Dashboard</CardTitle>
-              <CardDescription>Welcome back, {currentUser.email}!</CardDescription>
+              <CardTitle className="text-2xl">Admin Dashboard</CardTitle>
+              <CardDescription>Welcome back, Admin {currentUser.email}!</CardDescription>
             </CardHeader>
             <CardContent>
-              <p>This is your personal dashboard. More features coming soon!</p>
+              <p>This is the admin dashboard. You can manage users and content here.</p>
               <Button onClick={handleLogout} variant="destructive" className="mt-6">
                 Log Out
               </Button>
@@ -66,4 +66,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;
