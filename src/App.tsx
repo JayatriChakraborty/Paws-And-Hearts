@@ -8,6 +8,9 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BrowsePets from "./pages/BrowsePets";
 import AdoptionForm from "./pages/AdoptionForm";
+import SuccessStories from "./pages/SuccessStories";
+import AdoptionProcess from "./pages/AdoptionProcess";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +24,9 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/browse-pets" element={<BrowsePets />} />
           <Route path="/adoption-form" element={<AdoptionForm />} />
+          <Route path="/success-stories" element={<SuccessStories />} />
+          <Route path="/adoption-process" element={<AdoptionProcess />} />
+          <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

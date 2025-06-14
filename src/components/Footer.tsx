@@ -1,8 +1,8 @@
-
 import { Logo } from './Logo';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Twitter, Facebook, Instagram } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   return (
@@ -29,7 +29,7 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold text-foreground">Quick Links</h3>
              <ul className="mt-4 space-y-2 text-sm">
-              <li><a href="#" className="hover:text-primary transition-colors">Adoption Process</a></li>
+              <li><Link to="/adoption-process" className="hover:text-primary transition-colors">Adoption Process</Link></li>
               <li><a href="#" className="hover:text-primary transition-colors">FAQs</a></li>
               <li><a href="#" className="hover:text-primary transition-colors">Terms & Conditions</a></li>
               <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>

@@ -8,9 +8,9 @@ import { Link } from 'react-router-dom';
 
 const navItems = [
   { name: 'Browse Pets', href: '/browse-pets' },
-  { name: 'Success Stories', href: '#' },
-  { name: 'Adoption Process', href: '#' },
-  { name: 'Contact', href: '#' },
+  { name: 'Success Stories', href: '/success-stories' },
+  { name: 'Adoption Process', href: '/adoption-process' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 export const Header = () => {
