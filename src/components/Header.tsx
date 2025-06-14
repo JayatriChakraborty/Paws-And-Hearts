@@ -4,7 +4,11 @@ import { Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import { auth } from '@/lib/firebase';
+import { signOut } from 'firebase/auth';
+import { toast } from 'sonner';
 
 const navItems = [
   { name: 'Browse Pets', href: '/browse-pets' },
@@ -15,6 +19,18 @@ const navItems = [
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast.success('You have been logged out.');
+      navigate('/');
+    } catch (error) {
+      toast.error('Failed to log out.');
+    }
+  };
 
   return (
     <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
@@ -31,11 +47,28 @@ export const Header = () => {
                 {item.name}
               </Link>
             ))}
+            {currentUser && (
+               <Link
+                to="/dashboard"
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+              >
+                Dashboard
+              </Link>
+            )}
           </nav>
-          <div className="hidden md:block">
-            <Button asChild>
-              <Link to="/browse-pets">Adopt Now</Link>
-            </Button>
+          <div className="hidden md:flex items-center gap-4">
+            {currentUser ? (
+              <Button onClick={handleLogout} variant="outline">Logout</Button>
+            ) : (
+              <>
+                <Button variant="ghost" asChild>
+                    <Link to="/login">Login</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/register">Register</Link>
+                </Button>
+              </>
+            )}
           </div>
           <div className="md:hidden">
             <Button
@@ -67,10 +100,28 @@ export const Header = () => {
               {item.name}
             </Link>
           ))}
+           {currentUser && (
+               <Link
+                to="/dashboard"
+                className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-secondary"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+            )}
           <div className="pt-4 pb-2 px-3">
-            <Button asChild className="w-full">
-                <Link to="/browse-pets" onClick={() => setIsMenuOpen(false)}>Adopt Now</Link>
-            </Button>
+             {currentUser ? (
+                <Button onClick={() => { handleLogout(); setIsMenuOpen(false); }} variant="outline" className="w-full">Logout</Button>
+            ) : (
+                <div className="flex flex-col gap-2">
+                    <Button asChild className="w-full">
+                        <Link to="/login" onClick={() => setIsMenuOpen(false)}>Login</Link>
+                    </Button>
+                    <Button variant="secondary" asChild className="w-full">
+                        <Link to="/register" onClick={() => setIsMenuOpen(false)}>Register</Link>
+                    </Button>
+                </div>
+            )}
           </div>
         </div>
       </div>
