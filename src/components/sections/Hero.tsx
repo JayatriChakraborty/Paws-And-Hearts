@@ -1,5 +1,6 @@
 
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 export const Hero = () => {
   return (
@@ -13,7 +14,9 @@ export const Hero = () => {
           Every pet deserves a loving family. Discover your new best friend and change a life forever.
         </p>
         <div className="mt-8">
-          <Button size="lg">Adopt Now</Button>
+          <Button size="lg" asChild>
+            <Link to="/browse-pets">Adopt Now</Link>
+          </Button>
         </div>
       </div>
     </section>

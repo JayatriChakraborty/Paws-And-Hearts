@@ -4,9 +4,10 @@ import { Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 const navItems = [
-  { name: 'Browse Pets', href: '#' },
+  { name: 'Browse Pets', href: '/browse-pets' },
   { name: 'Success Stories', href: '#' },
   { name: 'Adoption Process', href: '#' },
   { name: 'Contact', href: '#' },
@@ -22,17 +23,19 @@ export const Header = () => {
           <Logo />
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
           <div className="hidden md:block">
-            <Button>Adopt Now</Button>
+            <Button asChild>
+              <Link to="/browse-pets">Adopt Now</Link>
+            </Button>
           </div>
           <div className="md:hidden">
             <Button
@@ -55,16 +58,19 @@ export const Header = () => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navItems.map((item) => (
-            <a
+            <Link
               key={item.name}
-              href={item.href}
+              to={item.href}
               className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-secondary"
+              onClick={() => setIsMenuOpen(false)}
             >
               {item.name}
-            </a>
+            </Link>
           ))}
           <div className="pt-4 pb-2 px-3">
-            <Button className="w-full">Adopt Now</Button>
+            <Button asChild className="w-full">
+                <Link to="/browse-pets" onClick={() => setIsMenuOpen(false)}>Adopt Now</Link>
+            </Button>
           </div>
         </div>
       </div>
