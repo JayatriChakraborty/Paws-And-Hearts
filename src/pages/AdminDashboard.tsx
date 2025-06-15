@@ -1,5 +1,4 @@
 
-```tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -200,4 +199,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-```
