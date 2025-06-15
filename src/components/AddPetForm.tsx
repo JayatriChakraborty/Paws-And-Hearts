@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 const petFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -33,7 +34,7 @@ const petFormSchema = z.object({
   size: z.enum(["Small", "Medium", "Large"]),
   breed: z.string().min(2, "Breed must be at least 2 characters."),
   description: z.string().min(10, "Description must be at least 10 characters."),
-  image: z.string().url("Please enter a valid image URL."),
+  image: z.string().min(1, "An image is required."),
 });
 
 type PetFormValues = z.infer<typeof petFormSchema>;
@@ -53,8 +54,21 @@ export function AddPetForm() {
     },
   });
 
+  const [isDragging, setIsDragging] = React.useState(false);
+  const imageValue = form.watch("image");
+
+  React.useEffect(() => {
+    // Revoke the object URL to avoid memory leaks
+    return () => {
+      if (imageValue && imageValue.startsWith("blob:")) {
+        URL.revokeObjectURL(imageValue);
+      }
+    };
+  }, [imageValue]);
+
   function onSubmit(data: PetFormValues) {
     // In a real application, you would send this data to your backend to be saved.
+    // The image data is a temporary blob URL. For a real app, you'd upload the file to a storage service.
     console.log("New pet data:", data);
     toast.success("New pet added!", {
       description: `${data.name} is ready for adoption. This is for demonstration and won't be saved permanently.`,
@@ -186,14 +200,66 @@ export function AddPetForm() {
           name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image URL</FormLabel>
-              <FormControl>
-                <Input placeholder="https://images.unsplash.com/..." {...field} />
-              </FormControl>
+              <FormLabel>Image</FormLabel>
+              <div
+                onDragEnter={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setIsDragging(false);
+                  const file = e.dataTransfer.files?.[0];
+                  if (file && file.type.startsWith("image/")) {
+                    const currentImage = form.getValues("image");
+                    if (currentImage && currentImage.startsWith("blob:")) {
+                        URL.revokeObjectURL(currentImage);
+                    }
+                    const imageUrl = URL.createObjectURL(file);
+                    field.onChange(imageUrl);
+                  }
+                }}
+                className={cn(
+                  "flex justify-center items-center w-full p-6 border-2 border-dashed rounded-md cursor-pointer transition-colors",
+                  isDragging ? "border-primary bg-primary/10" : "border-input hover:border-primary/50"
+                )}
+              >
+                <FormControl>
+                  <label htmlFor="image-upload" className="flex flex-col items-center justify-center w-full h-full text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 mb-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                    <p className="mb-2 text-sm text-muted-foreground">
+                      <span className="font-semibold text-primary">Click to upload</span> or drag and drop
+                    </p>
+                    <p className="text-xs text-muted-foreground">PNG, JPG, GIF up to 10MB</p>
+                    <Input
+                      id="image-upload"
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const currentImage = form.getValues("image");
+                          if (currentImage && currentImage.startsWith("blob:")) {
+                            URL.revokeObjectURL(currentImage);
+                          }
+                          const imageUrl = URL.createObjectURL(file);
+                          field.onChange(imageUrl);
+                        }
+                      }}
+                    />
+                  </label>
+                </FormControl>
+              </div>
               <FormDescription>
-                Please provide a direct URL to an image of the pet.
+                Upload a picture of the pet.
               </FormDescription>
               <FormMessage />
+              {field.value && (
+                <div className="mt-4">
+                  <p className="text-sm font-medium mb-2">Image Preview:</p>
+                  <img src={field.value} alt="Pet preview" className="w-40 h-40 object-cover rounded-md border" />
+                </div>
+              )}
             </FormItem>
           )}
         />
