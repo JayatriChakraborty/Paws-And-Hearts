@@ -1,5 +1,6 @@
 
-import { useEffect } from 'react';
+```tsx
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Header } from '@/components/Header';
@@ -17,6 +18,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Users, PlusCircle } from 'lucide-react';
 import { AddPetForm } from '@/components/add-pet-form';
 import { UserManagement } from '@/components/user-management';
@@ -34,6 +41,7 @@ const adoptionInterests = [
 const AdminDashboard = () => {
   const { currentUser, loading, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const [selectedPet, setSelectedPet] = useState<{ petName: string; users: string[] } | null>(null);
 
   useEffect(() => {
     if (!loading) {
@@ -55,14 +63,18 @@ const AdminDashboard = () => {
     }
   };
 
-  // Process data to find pets with multiple interests
-  const interestCounts = adoptionInterests.reduce((acc, interest) => {
-    acc[interest.petName] = (acc[interest.petName] || 0) + 1;
+  // Process data to find pets with multiple interests and their interested users
+  const interestsByPet = adoptionInterests.reduce((acc, interest) => {
+    if (!acc[interest.petName]) {
+      acc[interest.petName] = { count: 0, users: [] };
+    }
+    acc[interest.petName].count++;
+    acc[interest.petName].users.push(interest.userName);
     return acc;
-  }, {} as Record<string, number>);
+  }, {} as Record<string, { count: number; users: string[] }>);
 
-  const popularPets = Object.entries(interestCounts)
-    .map(([petName, count]) => ({ petName, count }))
+  const popularPets = Object.entries(interestsByPet)
+    .map(([petName, data]) => ({ petName, ...data }))
     .filter(pet => pet.count > 1)
     .sort((a, b) => b.count - a.count);
 
@@ -107,7 +119,15 @@ const AdminDashboard = () => {
                       {popularPets.map((pet) => (
                         <TableRow key={pet.petName}>
                           <TableCell className="font-medium">{pet.petName}</TableCell>
-                          <TableCell className="text-right">{pet.count}</TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              variant="link"
+                              className="h-auto justify-end p-0 text-right"
+                              onClick={() => setSelectedPet({ petName: pet.petName, users: pet.users })}
+                            >
+                              {pet.count}
+                            </Button>
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -159,8 +179,25 @@ const AdminDashboard = () => {
         </div>
       </main>
       <Footer />
+      <Dialog open={!!selectedPet} onOpenChange={(isOpen) => !isOpen && setSelectedPet(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Users interested in {selectedPet?.petName}</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <ul className="space-y-2 list-disc list-inside">
+              {selectedPet?.users.map((user, index) => (
+                <li key={index} className="text-sm text-muted-foreground">
+                  {user}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
 export default AdminDashboard;
+```
