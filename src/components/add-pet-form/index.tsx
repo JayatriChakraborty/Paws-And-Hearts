@@ -1,14 +1,13 @@
+
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,21 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { UploadCloud } from "lucide-react";
-
-const petFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  type: z.enum(["Dog", "Cat", "Other"]),
-  age: z.enum(["Young", "Adult", "Senior"]),
-  gender: z.enum(["Male", "Female"]),
-  size: z.enum(["Small", "Medium", "Large"]),
-  breed: z.string().min(2, "Breed must be at least 2 characters."),
-  description: z.string().min(10, "Description must be at least 10 characters."),
-  image: z.string().min(1, "An image is required."),
-});
-
-type PetFormValues = z.infer<typeof petFormSchema>;
+import { petFormSchema, PetFormValues } from "./schema";
+import { ImageUpload } from "./ImageUpload";
 
 export function AddPetForm() {
   const form = useForm<PetFormValues>({
@@ -53,18 +39,6 @@ export function AddPetForm() {
       image: "",
     },
   });
-
-  const [isDragging, setIsDragging] = React.useState(false);
-  const imageValue = form.watch("image");
-
-  React.useEffect(() => {
-    // Revoke the object URL to avoid memory leaks
-    return () => {
-      if (imageValue && imageValue.startsWith("blob:")) {
-        URL.revokeObjectURL(imageValue);
-      }
-    };
-  }, [imageValue]);
 
   function onSubmit(data: PetFormValues) {
     // In a real application, you would send this data to your backend to be saved.
@@ -198,62 +172,7 @@ export function AddPetForm() {
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-              <div
-                onDragEnter={(e) => { e.preventDefault(); setIsDragging(true); }}
-                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-                onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragging(false);
-                  const file = e.dataTransfer.files?.[0];
-                  if (file && file.type.startsWith("image/")) {
-                    const imageUrl = URL.createObjectURL(file);
-                    field.onChange(imageUrl);
-                  }
-                }}
-                className={cn(
-                  "flex justify-center items-center w-full p-6 border-2 border-dashed rounded-md cursor-pointer transition-colors",
-                  isDragging ? "border-primary bg-primary/10" : "border-input hover:border-primary/50"
-                )}
-              >
-                <FormControl>
-                  <label htmlFor="image-upload" className="flex flex-col items-center justify-center w-full h-full text-center">
-                    <UploadCloud className="w-10 h-10 mb-4 text-muted-foreground" />
-                    <p className="mb-2 text-sm text-muted-foreground">
-                      <span className="font-semibold text-primary">Click to upload</span> or drag and drop
-                    </p>
-                    <p className="text-xs text-muted-foreground">PNG, JPG, GIF up to 10MB</p>
-                    <Input
-                      id="image-upload"
-                      type="file"
-                      className="hidden"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const imageUrl = URL.createObjectURL(file);
-                          field.onChange(imageUrl);
-                        }
-                      }}
-                    />
-                  </label>
-                </FormControl>
-              </div>
-              <FormDescription>
-                Upload a picture of the pet.
-              </FormDescription>
-              <FormMessage />
-              {field.value && (
-                <div className="mt-4">
-                  <p className="text-sm font-medium mb-2">Image Preview:</p>
-                  <img src={field.value} alt="Pet preview" className="w-40 h-40 object-cover rounded-md border" />
-                </div>
-              )}
-            </FormItem>
-          )}
+          render={({ field }) => <ImageUpload field={field} />}
         />
         
         <FormField

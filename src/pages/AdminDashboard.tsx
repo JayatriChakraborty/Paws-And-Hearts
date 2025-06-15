@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Users, PlusCircle } from 'lucide-react';
-import { AddPetForm } from '@/components/AddPetForm';
+import { AddPetForm } from '@/components/add-pet-form';
 
 // Mock data to simulate adoption interests from a database
 const adoptionInterests = [
