@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -18,6 +19,7 @@ import {
 } from "@/components/ui/table";
 import { Users, PlusCircle } from 'lucide-react';
 import { AddPetForm } from '@/components/add-pet-form';
+import { UserManagement } from '@/components/user-management';
 
 // Mock data to simulate adoption interests from a database
 const adoptionInterests = [
@@ -128,9 +130,8 @@ const AdminDashboard = () => {
                   Manage users, roles, and permissions.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-col items-start">
-                <p>User management features are coming soon.</p>
-                 <Button className="mt-4" disabled>View All Users</Button>
+              <CardContent>
+                <UserManagement />
               </CardContent>
             </Card>
           </div>
