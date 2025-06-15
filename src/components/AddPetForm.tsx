@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { UploadCloud } from "lucide-react";
 
 const petFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -210,10 +210,6 @@ export function AddPetForm() {
                   setIsDragging(false);
                   const file = e.dataTransfer.files?.[0];
                   if (file && file.type.startsWith("image/")) {
-                    const currentImage = form.getValues("image");
-                    if (currentImage && currentImage.startsWith("blob:")) {
-                        URL.revokeObjectURL(currentImage);
-                    }
                     const imageUrl = URL.createObjectURL(file);
                     field.onChange(imageUrl);
                   }
@@ -225,7 +221,7 @@ export function AddPetForm() {
               >
                 <FormControl>
                   <label htmlFor="image-upload" className="flex flex-col items-center justify-center w-full h-full text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 mb-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                    <UploadCloud className="w-10 h-10 mb-4 text-muted-foreground" />
                     <p className="mb-2 text-sm text-muted-foreground">
                       <span className="font-semibold text-primary">Click to upload</span> or drag and drop
                     </p>
@@ -238,10 +234,6 @@ export function AddPetForm() {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const currentImage = form.getValues("image");
-                          if (currentImage && currentImage.startsWith("blob:")) {
-                            URL.revokeObjectURL(currentImage);
-                          }
                           const imageUrl = URL.createObjectURL(file);
                           field.onChange(imageUrl);
                         }
