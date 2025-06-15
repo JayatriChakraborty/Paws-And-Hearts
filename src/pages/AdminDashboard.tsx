@@ -16,7 +16,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Users } from 'lucide-react';
+import { Users, PlusCircle } from 'lucide-react';
+import { AddPetForm } from '@/components/AddPetForm';
 
 // Mock data to simulate adoption interests from a database
 const adoptionInterests = [
@@ -134,6 +135,21 @@ const AdminDashboard = () => {
             </Card>
           </div>
           
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <PlusCircle className="h-5 w-5" />
+                Add New Pet
+              </CardTitle>
+              <CardDescription>
+                Fill out the form to add a new pet to the listings.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <AddPetForm />
+            </CardContent>
+          </Card>
+
           <div className="mt-12 text-center">
             <Button onClick={handleLogout} variant="destructive">
               Log Out
